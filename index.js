@@ -59,7 +59,7 @@ app.post('/create-student', async (req, res) => {
 		batch: batch,
 		mentor: null,
 	})
-	res.send(student.ops[0])
+	res.send(student)
 })
 
 app.get('/mentors', async (req, res) => {
