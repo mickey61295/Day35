@@ -168,10 +168,11 @@ app.put('/assign-mentor', async (req, res) => {
 
 app.get('/mentor/:mentorId', async (req, res) => {
 	const { mentorId } = req.params
+
 	const students = await client
 		.db('day35')
 		.collection('students')
-		.find({ mentor: mentorId }, { projection: { name: 1 } })
+		.find({ mentor: parseInt(mentorId) }, { projection: { name: 1 } })
 		.toArray()
 	res.send(students)
 })
