@@ -1,3 +1,3 @@
 # Day35
 
-Will be adding documentation after following day's session
+Will be adding Postman documentation after following day's session
