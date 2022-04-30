@@ -166,7 +166,7 @@ app.put('/assign-mentor', async (req, res) => {
 	res.send('Student assigned to mentor')
 })
 
-app.get('/mentors/:mentorId', async (req, res) => {
+app.get('/mentor/:mentorId', async (req, res) => {
 	const { mentorId } = req.params
 
 	const students = await client
