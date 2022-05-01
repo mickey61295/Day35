@@ -155,9 +155,10 @@ app.put('/assign-student', async (req, res) => {
 	res.send({ student, mentor })
 })
 
+// Assign A mentor or update mentor for a student
 app.put('/assign-mentor', async (req, res) => {
 	const { mentorId, studentId } = req.body
-	await client
+	const student = await client
 		.db('day35')
 		.collection('students')
 		.updateOne(
@@ -166,20 +167,45 @@ app.put('/assign-mentor', async (req, res) => {
 			},
 			{
 				$set: {
-					mentor: mentorId,
+					mentor_id: mentorId,
+				},
+			}
+		)
+	const mentees = (
+		await client
+			.db('day35')
+			.collection('mentors')
+			.find({ mentor_id: mentorId }, { students: 1, _id: 0 })
+			.toArray()
+	)[0].students
+	const tobeAddedStudent = [...mentees, studentId]
+	const mentor = await client
+		.db('day35')
+		.collection('mentors')
+		.updateOne(
+			{
+				mentor_id: mentorId,
+			},
+			{
+				$set: {
+					students: tobeAddedStudent,
 				},
 			}
 		)
 	res.send('Student assigned to mentor')
 })
 
+// Get all students of a mentor
 app.get('/mentor/:mentorId', async (req, res) => {
 	const { mentorId } = req.params
 
 	const students = await client
 		.db('day35')
 		.collection('students')
-		.find({ mentor: parseInt(mentorId) }, { projection: { name: 1, _id: 0 } })
+		.find(
+			{ mentor_id: parseInt(mentorId) },
+			{ projection: { name: 1, _id: 0 } }
+		)
 		.toArray()
 	res.send(students)
 })
