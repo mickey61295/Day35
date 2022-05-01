@@ -80,11 +80,11 @@ app.get('/movies/:id', async function (req, res) {
 })
 
 app.delete('/movies/deletemovie/:id', async function (req, res) {
-	const { id } = req.params
+	const { name } = req.params
 	const result = await client
 		.db('classMongo')
 		.collection('movies')
-		.deleteOne({ id: id })
+		.deleteOne({ name: name })
 	res.send(result)
 })
 
